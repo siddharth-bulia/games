@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Snake v8</title>
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <script type="text/javascript" src="jquery.js"></script>
+	<!--<script type="text/javascript" src="js/jquery-mobile.js"></script>-->
+    <script type="text/javascript" src="jquery-buzz.js"></script>
+    <script type="text/javascript" src="hammer.min.js"></script>
+    
+</head>
+<body class="touch-manipulation">
+    <div id="swipeLayer" class="touch-manipulation"></div>
+    <div class="marker">
+        <div  class="common points"><p id="printpoint" align="center">0</p></div>
+        <div  class="common distance"><p id="distance" align="center">0</p></div>
+    </div>
+    <div class="container" id="container">
+
+    </div>
+    
+    
+    <div id="control">
+        <div id="control-up"></div>
+        <!-- <div id="control-up-second"></div> -->
+        <!-- <div id="control-down"></div> -->
+        <div id="control-down-second"></div>
+        <div id="control-left"></div>
+        <div id="control-right"></div>
+    </div>
+
+    <div class="controls">
+        <div id="control-up-big"></div>
+        <div id="control-down-big"></div>
+        <div id="control-left-big"></div>
+        <div id="control-right-big"></div>
+    </div>
+            
+<script src="jscript.js"></script>
+<script type="text/javascript">
+    function simulateKeydown(code) {
+        console.log("simnulate called");
+        var e = jQuery.Event("keyup");
+        e.keyCode = code;
+        jQuery('body').trigger(e);
+        direction(e);
+    }
+
+    function simulateKeyup(code) {
+        var e = jQuery.Event("keyup");
+        e.keyCode = code;
+        jQuery('body').trigger(e);
+    }
+
+    $(document).ready(function () {
+        
+        var enableSwipe = false;
+        if (enableSwipe) {
+        hammertime = new Hammer(document.getElementById('swipeLayer'), { touchAction: 'none' });
+        hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+        hammertime.get('swipe').set({threshold: 5});
+        hammertime.on('swipe', function (e) {
+
+            switch (e.direction) {
+                case Hammer.DIRECTION_LEFT:
+                    e.preventDefault();
+                    simulateKeydown(37);
+                    console.log("left swipe called");
+
+                    break;
+                case Hammer.DIRECTION_RIGHT:
+                    e.preventDefault();
+                    simulateKeydown(39);
+                    console.log("right swipe called");
+                    // direction(39);
+                    // movePacman(1);
+                    break;
+                case Hammer.DIRECTION_UP:
+                    e.preventDefault();
+                    simulateKeydown(38);
+                    console.log("up swipe called");
+                    // direction(38);
+                    // movePacman(4);
+                    break;
+                case Hammer.DIRECTION_DOWN:
+                    e.preventDefault();
+                    simulateKeydown(40);
+                    console.log("down swipe called");
+                    // direction(40);
+                    // movePacman(2);
+                    break;
+            }
+            // simulateKeyup(13);
+        });
+        }
+        
+        var enableTapControls = true;
+
+        if (enableTapControls) {
+			$("#control-up, #control-up-second, #control-up-big").on("mousedown touchstart", function (e) {
+				e.preventDefault();
+				simulateKeydown(38);
+				simulateKeyup(13);
+			});
+			$("#control-down, #control-down-second, #control-down-big").on("mousedown touchstart", function (e) {
+				e.preventDefault();
+				simulateKeydown(40);
+				simulateKeyup(13);
+			});
+			$("#control-left, #control-left-big").on("mousedown touchstart", function (e) {
+				e.preventDefault();
+				simulateKeydown(37);
+				simulateKeyup(13);
+			});
+			$("#control-right, #control-right-big").on("mousedown touchstart", function (e) {
+				e.preventDefault();
+				simulateKeydown(39);
+				simulateKeyup(13);
+			});
+			}
+    });
+    </script>
+</body>
+</html>

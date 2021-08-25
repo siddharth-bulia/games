@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+
+	<link rel="stylesheet" type="text/css" href="css/pacman.css" />
+	<link rel="stylesheet" type="text/css" href="css/pacman-home.css" />
+
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<!--<script type="text/javascript" src="js/jquery-mobile.js"></script>-->
+	<script type="text/javascript" src="js/jquery-buzz.js"></script>
+
+	<script type="text/javascript" src="js/game.js"></script>
+	<script type="text/javascript" src="js/tools.js"></script>
+	<script type="text/javascript" src="js/board.js"></script>
+	<script type="text/javascript" src="js/paths.js"></script>
+	<script type="text/javascript" src="js/bubbles.js"></script>
+	<script type="text/javascript" src="js/fruits.js"></script>
+	<script type="text/javascript" src="js/pacman.js"></script>
+	<script type="text/javascript" src="js/ghosts.js"></script>
+	<script type="text/javascript" src="js/home.js"></script>
+	<script type="text/javascript" src="js/sound.js"></script>
+	<script type="text/javascript" src="js/hammer.min.js"></script>
+
+	<script type="text/javascript">
+		var enableTapControls = false;
+		function is_touch_device() {
+			return true;
+			// var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+			// var mq = function (query) {
+			// 	return window.matchMedia(query).matches;
+			// }
+
+			// if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+			// 	return true;
+			// }
+
+			// // include the 'heartz' as a way to have a non matching MQ to help terminate the join
+			// // https://git.io/vznFH
+			// var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('');
+			// return mq(query);
+		}
+
+		function arrayConcat(arr1, arr2) {
+			var arr1Length = arr1.length;
+			var arr2Length = arr2.length;
+			arr1.length = arr1Length + arr2Length;
+
+			for (var i = 0; i < arr2Length; i++) {
+				arr1[arr1Length + i] = arr2[i];
+			}
+			return arr1;
+		}
+
+		document.addEventListener("visibilitychange", function() {
+			if (document.visibilityState !== 'visible') {
+			// stop your audio here, something like
+				stopAllSound();
+				$(".sound").attr("data-sound", "off");
+				$(".sound").find("img").attr("src", "img/sound-off.png");
+				GROUP_SOUND.mute();
+			} else {
+				$(".sound").attr("data-sound", "on");
+				$(".sound").find("img").attr("src", "img/sound-on.png");
+				GROUP_SOUND.unmute();
+			}
+  		});
+		// function detectswipe(el,func) {
+		// 	swipe_det = new Object();
+		// 	swipe_det.sX = 0;
+		// 	swipe_det.sY = 0;
+		// 	swipe_det.eX = 0;
+		// 	swipe_det.eY = 0;
+		// 	var min_x = 20;  //min x swipe for horizontal swipe
+		// 	var max_x = 40;  //max x difference for vertical swipe
+		// 	var min_y = 40;  //min y swipe for vertical swipe
+		// 	var max_y = 50;  //max y difference for horizontal swipe
+		// 	var direc = "";
+		// 	ele = document.getElementById(el);
+		// 	ele.addEventListener('touchstart',function(e){
+		// 		var t = e.touches[0];
+		// 		swipe_det.sX = t.screenX; 
+		// 		swipe_det.sY = t.screenY;
+		// 	},false);
+		// 	ele.addEventListener('touchmove',function(e){
+		// 		e.preventDefault();
+		// 		var t = e.touches[0];
+		// 		swipe_det.eX = t.screenX; 
+		// 		swipe_det.eY = t.screenY;    
+		// 	},false);
+		// 	ele.addEventListener('touchend',function(e){
+		// 		//horizontal detection
+		// 		if ((((swipe_det.eX - min_x > swipe_det.sX) || (swipe_det.eX + min_x < swipe_det.sX)) && ((swipe_det.eY < swipe_det.sY + max_y) && (swipe_det.sY > swipe_det.eY - max_y)))) {
+		// 		if(swipe_det.eX > swipe_det.sX) direc = "r";
+		// 		else direc = "l";
+		// 		}
+		// 		//vertical detection
+		// 		if ((((swipe_det.eY - min_y > swipe_det.sY) || (swipe_det.eY + min_y < swipe_det.sY)) && ((swipe_det.eX < swipe_det.sX + max_x) && (swipe_det.sX > swipe_det.eX - max_x)))) {
+		// 		if(swipe_det.eY > swipe_det.sY) direc = "d";
+		// 		else direc = "u";
+		// 		}
+
+		// 		if (direc != "") {
+		// 		if(typeof func == 'function') func(el,direc);
+		// 		}
+		// 		direc = "";
+		// 	},false);  
+		// }
+
+		function simulateKeyup(code) {
+			var e = jQuery.Event("keyup");
+			e.keyCode = code;
+			jQuery('body').trigger(e);
+		}
+		// function simulateKeydown(code) {
+		// 	var e = jQuery.Event("keydown");
+		// 	e.keyCode = code;
+		// 	jQuery('body').trigger(e);
+		// }
+
+		$(document).ready(function () {
+
+			//$.mobile.loading().hide();
+			loadAllSound();
+
+			//jr code
+			// $(".sound").attr("data-sound", "off");
+			// $(".sound").find("img").attr("src", "img/sound-off.png");
+			// GROUP_SOUND.mute();
+
+			HELP_TIMER = setInterval(blinkHelp, HELP_DELAY);
+
+			// initHome();	// removed home class setup which is used to show game trailer and presentation of characters
+			initGame(true);	// start game directly as soon as lands on homepage
+
+			$(".sound").click(function (e) {
+				e.stopPropagation();
+
+				var sound = $(this).attr("data-sound");
+				if (sound === "on") {
+					$(".sound").attr("data-sound", "off");
+					$(".sound").find("img").attr("src", "img/sound-off.png");
+					GROUP_SOUND.mute();
+				} else {
+					$(".sound").attr("data-sound", "on");
+					$(".sound").find("img").attr("src", "img/sound-on.png");
+					GROUP_SOUND.unmute();
+				}
+			});
+
+			$(".help-button, #help").click(function (e) {
+				e.stopPropagation();
+				if (!PACMAN_DEAD && !LOCK && !GAMEOVER) {
+					if ($('#help').css("display") === "none") {
+						$('#help').fadeIn("slow");
+						$(".help-button").hide();
+						if ($("#panel").css("display") !== "none") {
+							pauseGame();
+						}
+					} else {
+						$('#help').fadeOut("slow");
+						$(".help-button").show();
+					}
+				}
+			});
+
+			$(".github,.putchu").click(function (e) {
+				e.stopPropagation();
+			});
+
+			$("#home").on("click touchstart", function (e) {
+				if ($('#help').css("display") === "none") {
+					e.preventDefault();
+					simulateKeydown(13);
+				}
+			});
+			if (enableTapControls) {
+			$("#control-up, #control-up-second, #control-up-big").on("mousedown touchstart", function (e) {
+				e.preventDefault();
+				simulateKeydown(38);
+				simulateKeyup(13);
+			});
+			$("#control-down, #control-down-second, #control-down-big").on("mousedown touchstart", function (e) {
+				e.preventDefault();
+				simulateKeydown(40);
+				simulateKeyup(13);
+			});
+			$("#control-left, #control-left-big").on("mousedown touchstart", function (e) {
+				e.preventDefault();
+				simulateKeydown(37);
+				simulateKeyup(13);
+			});
+			$("#control-right, #control-right-big").on("mousedown touchstart", function (e) {
+				e.preventDefault();
+				simulateKeydown(39);
+				simulateKeyup(13);
+			});
+			}
+
+			//jr function
+			if (is_touch_device()) {
+				var ups = '#control-up, #control-up-second, #control-up-big'.split(', ');
+				var downs = '#control-down, #control-down-second, #control-down-big'.split(', ');
+				var lefts = '#control-left, #control-left-big'.split(', ');
+				var rights = '#control-right, #control-right-big'.split(', ');
+				var allControl = arrayConcat(arrayConcat(arrayConcat(ups, downs), lefts), rights).join(', ');
+				// control
+				$(allControl).each(function () {
+					console.log($(this));
+					$(this).hide();
+				})
+				/* var hammertime = Hammer(el, { touchAction: 'none' }); not necessary anymore - see https://github.com/hammerjs/hammer.js/pull/855 */
+				// detectswipe('swipeLayer',function(el,d){
+				// 	switch (d) {
+				// 		case 'l': //Hammer.DIRECTION_LEFT:
+				// 			// e.preventDefault();
+				// 			simulateKeydown(37);
+				// 			simulateKeyup(13);
+				// 			break;
+				// 		case 'r': //Hammer.DIRECTION_RIGHT:
+				// 			// e.preventDefault();
+				// 			simulateKeydown(39);
+				// 			simulateKeyup(13);
+				// 			break;
+				// 		case 'u': //Hammer.DIRECTION_UP:
+				// 			// e.preventDefault();
+				// 			simulateKeydown(38);
+				// 			simulateKeyup(13);
+				// 			break;
+				// 		case 'd': //Hammer.DIRECTION_DOWN:
+				// 			// e.preventDefault();
+				// 			simulateKeydown(40);
+				// 			simulateKeyup(13);
+				// 			break;
+				// 	}
+				// });
+
+				hammertime = new Hammer(document.getElementById('swipeLayer'), { touchAction: 'none' });
+				hammertime.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+				hammertime.get('swipe').set({threshold: 5});
+				hammertime.on('swipe', function (e) {
+					if (GAME_START_LOCK) {
+						GAME_START_LOCK = false;
+						go();
+					}
+
+					switch (e.direction) {
+						case Hammer.DIRECTION_LEFT:
+							e.preventDefault();
+							// simulateKeydown(37);
+							movePacman(3);
+							break;
+						case Hammer.DIRECTION_RIGHT:
+							e.preventDefault();
+							// simulateKeydown(39);
+							movePacman(1);
+							break;
+						case Hammer.DIRECTION_UP:
+							e.preventDefault();
+							// simulateKeydown(38);
+							movePacman(4);
+							break;
+						case Hammer.DIRECTION_DOWN:
+							e.preventDefault();
+							// simulateKeydown(40);
+							movePacman(2);
+							break;
+					}
+					simulateKeyup(13);
+				});
+			}
+
+			$("body").keyup(function (e) {
+				KEYDOWN = false;
+			});
+
+			$("body").keydown(function (e) {
+				if (HOME) {
+
+					initGame(true);
+
+				} else {
+					KEYDOWN = true;
+					if (GAME_START_LOCK) {
+						GAME_START_LOCK = false;
+						go();
+					}
+					if (PACMAN_DEAD && !LOCK) {
+						erasePacman();
+						resetPacman();
+						drawPacman();
+
+						eraseGhosts();
+						resetGhosts();
+						drawGhosts();
+						moveGhosts();
+
+						blinkSuperBubbles();
+
+					} else if (e.keyCode >= 37 && e.keyCode <= 40 && !PAUSE && !PACMAN_DEAD && !LOCK) {
+						if (e.keyCode === 39) {
+							movePacman(1);
+						} else if (e.keyCode === 40) {
+							movePacman(2);
+						} else if (e.keyCode === 37) {
+							movePacman(3);
+						} else if (e.keyCode === 38) {
+							movePacman(4);
+						}
+					} else if (e.keyCode === 68 && !PAUSE) {
+						/*if ( $("#canvas-paths").css("display") === "none" ) {
+							$("#canvas-paths").show();
+						} else {
+							$("#canvas-paths").hide();
+						}*/
+					} else if (e.keyCode === 80 && !PACMAN_DEAD && !LOCK) {
+						if (PAUSE) {
+							resumeGame();
+						} else {
+							pauseGame();
+						}
+					}
+					// else if (GAMEOVER) {
+					// 	initHome();
+					// }
+				}
+			});
+		});
+	</script>
+
+	<title>local Joyride - Pac-Man</title>
+</head>
+
+<body class="touch-manipulation">
+	<div id="swipeLayer" class="touch-manipulation"></div>
+
+	<div id="sound"></div>
+
+	<div id="help">
+		<h2>Help</h2>
+		<table align="center" border="0" cellPadding="2" cellSpacing="0">
+			<tbody>
+				<!-- changed description for mobile page -->
+				<tr>
+					<td>Swipe Left : </td>
+					<td>Move Left</td>
+				</tr>
+				<tr>
+					<td>Swipe Right : </td>
+					<td>Move Right</td>
+				</tr>
+				<tr>
+					<td>Swipe Down : </td>
+					<td>Move Down</td>
+				</tr>
+				<tr>
+					<td>Swipe Up : </td>
+					<td>Move Up</td>
+				</tr>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+				</tr>
+				<!-- <tr><td>P : </td><td>PAUSE</td></tr> -->
+			</tbody>
+		</table>
+	</div>
+
+	<div id="home">
+		<!-- <h1>pac-man</h1> -->
+		<canvas id="canvas-home-title-pacman"></canvas>
+		<div id="presentation" style="display: none;">
+			<div id="presentation-titles">character &nbsp;/&nbsp; nickname</div>
+			<canvas id="canvas-presentation-blinky"></canvas>
+			<div id="presentation-character-blinky">- shadow</div>
+			<div id="presentation-name-blinky">"blinky"</div>
+			<canvas id="canvas-presentation-pinky"></canvas>
+			<div id="presentation-character-pinky">- speedy</div>
+			<div id="presentation-name-pinky">"pinky"</div>
+			<canvas id="canvas-presentation-inky"></canvas>
+			<div id="presentation-character-inky">- bashful</div>
+			<div id="presentation-name-inky">"inky"</div>
+			<canvas id="canvas-presentation-clyde"></canvas>
+			<div id="presentation-character-clyde">- pokey</div>
+			<div id="presentation-name-clyde">"clyde"</div>
+		</div>
+		<canvas id="trailer"></canvas>
+		<div class="help-button">- help -</div>
+		<a class="sound" href="javascript:void(0);" data-sound="on"><img src="img/sound-on.png" alt="" border="0"></a>
+	</div>
+
+	<div id="panel">
+		<!-- <h1>pac-man</h1> -->
+		<!-- <canvas id="canvas-panel-title-pacman"></canvas> -->
+		<div class="score-wrapper">
+			<div id="score">
+				<h2>1UP</h2><span>00</span>
+			</div>
+			<div id="highscore">
+				<h2>High Score</h2><span>00</span>
+			</div>
+		</div>
+		<div class="board-wrapper">
+		<div id="board">
+			<canvas id="canvas-board"></canvas>
+			<canvas id="canvas-paths"></canvas>
+			<canvas id="canvas-bubbles"></canvas>
+			<canvas id="canvas-fruits"></canvas>
+			<canvas id="canvas-pacman"></canvas>
+			<canvas id="canvas-ghost-blinky"></canvas>
+			<canvas id="canvas-ghost-pinky"></canvas>
+			<canvas id="canvas-ghost-inky"></canvas>
+			<canvas id="canvas-ghost-clyde"></canvas>
+			<!-- <div class="controls">
+				<div id="control-up-big"></div>
+				<div id="control-down-big"></div>
+				<div id="control-left-big"></div>
+				<div id="control-right-big"></div>
+			</div> -->
+			<canvas id="canvas-lifes"></canvas>
+			<canvas id="canvas-level-fruits"></canvas>
+			<div id="message"></div>
+		</div>
+		</div>
+		<!-- <div id="control">
+			<div id="control-up"></div>
+			<div id="control-up-second"></div>
+			<div id="control-down"></div>
+			<div id="control-down-second"></div>
+			<div id="control-left"></div>
+			<div id="control-right"></div>
+		</div> -->
+		<div class="help-button">- help -</div>
+		<a class="sound" href="javascript:void(0);" data-sound="on"><img src="img/sound-on.png" alt="" border="0"></a>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<html><head><link href="index.css" rel="stylesheet"></head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GoCorona</title>
+  <body>
+    <div class="main-container">
+      <audio id="bulletSound">
+        <source
+        />
+      </audio>
+      <audio id="coronaSong" loop>
+        <source
+        />
+      </audio>
+    <div id="phaser-corona" class="game-screen justify-end">
+      <div class="game-text-div">
+        <span id="score-div">SCORE: 0</span>
+      <div id="life-div">LIVES: 3</div>
+      </div>
+      <div id="click-here-div"></div>
+      <div id="mute-button"><img id="mute-icon" /></div>
+    </div>
+    <div class="start-screen game-screen center-align" id="start-screen">
+      <div id="start-but" class="button"></div>
+    </div>
+    <div class="restart-screen game-screen center-align" id="restart-screen">
+      <div class="score-box">
+      <span>Your Score is</span>
+      <span id="scoreText"></span>
+    </div>
+      <div id="restart-but" class="button"></div>
+    </div>
+  </div>
+  <script type="text/javascript" src="1.bundle.js"></script><script type="text/javascript" src="bundle.js"></script></body>
+</html>

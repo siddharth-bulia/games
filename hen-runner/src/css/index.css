@@ -1,0 +1,74 @@
+*{margin: 0; padding: 0;}
+
+body {
+  color: #3f3f3f;
+  background-color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+#background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url('../sprites/background.png');
+  background-size: contain;
+  filter: blur(20px);
+  opacity: 0.3;
+  z-index: -1;
+  /* display: inline-block; */
+  touch-action: manipulation;
+}
+
+/* #game {
+  display: flex;
+  width: 100%;
+  height: 600px;
+  flex-flow: column;
+  align-items: center;
+} */
+
+#container {
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  margin-top: -28.1%;
+  /* video height / video width */
+  padding-bottom: 56.2%;
+  height: 0;
+  z-index: 2;
+  /* overflow: hidden; */
+  touch-action: manipulation;
+  /* -webkit-tap-highlight-color: transparent; */
+}
+
+iframe {
+  width: 100%;
+  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  background-size: contain;
+  /* touch-action: manipulation; */
+  /* -webkit-tap-highlight-color: rgba(0,0,0,0);*/
+  -webkit-tap-highlight-color: transparent;
+}
+
+#footer {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  flex-flow: column;
+  align-items: center;
+  cursor: default;
+}
+
+#footer a {
+  text-decoration: none;
+  color: #262626;
+  transition: color 0.3s;
+}
+
+#footer a:hover {
+  color: #ff9900;
+}

@@ -1,0 +1,202 @@
+body{
+    background-color: darkslategrey;
+}
+
+.container{
+    width: 500px;
+    height: 500px;
+    margin: 30px auto;
+    margin-bottom: 10px;
+    margin-top: 500px;
+    background-color: #0c1021;
+
+    padding: 0px;
+    border: solid 10px slategrey;
+    border-radius: 10px;
+
+    transform: scale(1.7);
+
+    -webkit-box-shadow: 0px 0px 20px 3px rgba(0,0,0,0.6);
+    -moz-box-shadow: 0px 0px 20px 3px rgba(0,0,0,0.6);
+    box-shadow: 0px 0px 20px 3px rgba(0,0,0,0.6);
+}
+
+.box{
+    width: 5px;
+    height: 5px;
+    border-radius: 10px;
+    display: inline-block;
+    float: left;
+}
+
+.boxed{
+    background-color: #fd6401;
+    box-shadow: 0 0 5px #fd6401;
+}
+
+.point{
+    background-color: #68e768;
+}
+
+.marker{
+    /* margin-top: 400px; */
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 10%;
+}
+
+.common{
+    height: 30px;
+    width: 200px;
+    margin: auto;
+    border-radius: 10px;
+    border: solid 5px slategrey;
+    color: dimgray;
+    display: inline-block;
+    transform: scale(1.5);
+
+    background-color: #0C1021;
+    -webkit-box-shadow: 0px 0px 20px 3px rgba(0,0,0,0.6);
+    -moz-box-shadow: 0px 0px 20px 3px rgba(0,0,0,0.6);
+    box-shadow: 0px 0px 20px 3px rgba(0,0,0,0.6);
+}
+
+#printpoint,#distance{
+    height: 30px;
+    margin: 0px;
+    font-size: 20px;
+    font-family: cursive;
+    padding: 0px 0px 0px 0px;
+}
+
+.points{
+    position: relative;
+    left: 10%;
+    margin: 5px;
+    float: left;
+}
+
+.distance{
+    position: relative;
+    right: 10%;
+    margin: 5px;
+    float:right;
+}
+
+
+#swipeLayer{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+    right: 0;
+    touch-action: manipulation;
+    /* z-index: 1; */
+}
+*, .touch-manipulation{
+	touch-action: manipulation;
+}
+
+
+/**
+css for touch controls
+*/
+
+#control { 
+    position: absolute;
+    margin: auto;
+    left: 30%;
+    /* right: 50%; */
+    bottom: 130px;
+    /* width: calc(100vw - 40px); */
+    /* height: 140px; */
+    /* background-color: #666; */
+    /* opacity: 0.7; */
+    /* display: none; */
+    /* visibility: hidden; */
+    transform: scale(1.8);
+}
+#control-up, #control-down, #control-up-second, #control-down-second, #control-left, #control-right, #control-up-big, #control-down-big, #control-left-big, #control-right-big { 
+	position: absolute;
+	margin: auto;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: 64px;
+	cursor: pointer;
+	width: 64px;
+	height: 64px;
+	padding: 5px;
+}
+#control-up { 
+	top: -135px;
+    left: 70px;
+	background-image: url('img/move-up.png');
+}
+#control-down { 
+	bottom: 0px;
+	right: 70px;
+	background-image: url('img/move-down.png');
+}
+#control-up-second { 
+	top: 0px;
+	right: 70px;
+	background-image: url('img/move-up.png');
+}
+#control-down-second{ 
+	bottom: -37px;
+    left: 70px;
+	background-image: url('img/move-down.png');
+}
+#control-left { 
+	bottom: 0px;
+    top: 0px;
+    left: -40px;
+	background-image: url('img/move-left.png');
+}
+#control-right { 
+	bottom: 0px;
+    top: 0px;
+    left: 175px;
+	background-image: url('img/move-right.png');
+}
+
+#control-up-big, #control-down-big, #control-left-big, #control-right-big { 
+	position: absolute;
+	opacity: 0.2;
+	margin: auto;
+	padding: 0px;
+	display: none;
+	background-size: 98px;
+	z-index: 999999;
+}
+#control-up-big { 
+	bottom: 10px;
+	left: 0px;
+	right: 0px;
+	width: 125px;
+	height: 125px;
+	background-image: url('img/move-up-big.png');
+}
+#control-down-big { 
+	bottom: -120px;
+	left: 0px;
+	right: 0px;
+	width: 125px;
+	height: 125px;
+	background-image: url('img/move-down-big.png');
+}
+#control-left-big { 
+	left: 80px;
+	bottom: -90px;
+	width: 125px;
+	height: 175px;
+	background-image: url('img/move-left-big.png');
+}
+#control-right-big { 
+	right: 80px;
+	bottom: -90px;
+	width: 125px;
+	height: 175px;
+	background-image: url('img/move-right-big.png');
+}

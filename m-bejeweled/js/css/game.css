@@ -1,0 +1,176 @@
+@charset "UTF-8";
+
+#game_content{
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	background-color: rgba(51, 51, 85, 0.4);
+	background: url("../images/background1.jpg");
+	background-size: auto 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 5vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+#score_label {
+	font-size: 2em;
+}
+
+#grid{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	margin-left: calc(100% - 520px);
+	margin-top: 20%;
+	background: url("../images/grid.png");
+	background-repeat: no-repeat;
+}
+
+#player_info{
+	position: absolute;
+	bottom: 0px;
+	height: 20%;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	text-align: center;
+}
+
+#player_info p, #game_level{
+	font-size: 30pt;
+	font-weight: bold;
+}
+
+#total_score {
+	/* padding: 70vw 0 20vw 0; */
+	/* margin-left: 30vw; */
+	/* margin-top: -70vw; */
+	/* font-size: 20vw; */
+	/* height: 130vw; */
+	position: absolute;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	height: 12vh;
+	width: 12vh;
+	left: calc(50% - 6vh);
+	/* margin-top: calc(10%); */
+	font-weight: bold;
+	color: #FFF;
+	background-image: url('../images/rose.png');
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: top center;
+}
+
+#buttons-container {
+	height: 100%;
+	width: 30%;
+	position: absolute;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#total_score{
+	/* padding-top: 52vw; */
+}
+
+#goal_score{
+	font-size: 1.7em;
+}
+
+#level{
+	display: none;
+	margin-bottom: -60vw;
+}
+
+#level_text{
+	display: none;
+}
+
+#time_gauge{
+	position: absolute;
+	border-radius: 20vw;
+	width: 2%;
+	height: 80%;
+	margin: 0 10%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #666;
+}
+
+#current_gauge{
+	position: absolute;
+	border-radius: 20vw;
+	bottom: 0vw;
+	width: 100%;
+	height: 100%;
+	background-color: #00F000;
+}
+
+#current_score {
+	font-size: 1.7em;
+}
+
+.score_gain{
+	position: absolute;
+	left: 112vw;
+	font-size: 15vw;
+	font-weight: bold;
+	color: #222;
+}
+
+.gem, .bomb{
+	position: absolute;
+	width: 60px;
+	height: 60px;
+	background-size: 100%;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+#content button{
+	cursor:pointer;
+	/* height: 30vw;
+	margin: 0vw -5vw 15vw 0vw;
+	padding: 0 9vw 0 9vw; */
+}
+
+#content button:hover{
+	border-color: #999;
+	-o-box-shadow: 0 2vw 0 rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 2vw 0 rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 2vw 5vw rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1vw 2vw rgba(0, 0, 0, 0.15);
+}
+
+#content button:active{
+	border-color: #444;
+}
+
+#player_info button{
+	cursor: pointer;
+	width: 80%;
+	border-radius: 2vw;
+	margin: 10% 0;
+	-moz-border-radius: 2vw;
+	-webkit-border-radius: 2vw;
+	border: 3px solid rgba(68 ,68, 68, 1);
+	background-color: rgba(238, 34, 34, 0.6);
+	font-size: 20pt;
+	font-family: 'Electrolize', 'Segoe UI', Helvetica, Arial, 'Trebuchet MS', sans-serif;
+	color: #FFF;
+}
