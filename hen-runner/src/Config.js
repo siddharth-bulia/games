@@ -7,6 +7,12 @@ let canvas, context, WIDTH = window.innerWidth, HEIGHT = window.innerHeight,
         lost: 2
     }
 
+    
+window.addEventListener('resize', function(event) {
+    WIDTH = window.innerWidth, 
+    HEIGHT = window.innerHeight;
+}, true);
+
 // if (WIDTH >= 600) {
 //     WIDTH = 600;
 //     HEIGHT = 550;
